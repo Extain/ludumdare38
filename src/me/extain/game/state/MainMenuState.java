@@ -19,6 +19,7 @@ public class MainMenuState extends State {
 		
 		background = ImageLoader.loadImage("/main-menu-background.png");
 		guiHandler.addGuiObject(new GuiButton(main, "Play Game", 100 + 100 / 2, 200, 100, 20, 0));
+		guiHandler.addGuiObject(new GuiButton(main, "Quit Game", 100 + 100 / 2, 240, 100, 20, 1));
 	}
 
 	@Override
@@ -30,6 +31,10 @@ public class MainMenuState extends State {
 		
 		if (guiHandler.getOutputID() == 0) {
 			main.getStateMachine().setState(new GameState(main));
+		}
+		
+		if (guiHandler.getOutputID() == 1) {
+			System.exit(1);
 		}
 	}
 

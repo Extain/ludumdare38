@@ -14,6 +14,7 @@ import me.extain.game.objects.effects.Effect;
 import me.extain.game.objects.projectile.NormalProjectile;
 import me.extain.game.objects.projectile.Projectile;
 import me.extain.game.utils.Delay;
+import me.extain.game.utils.Time;
 
 public class Player extends GameObject {
 
@@ -33,7 +34,7 @@ public class Player extends GameObject {
 
 		ship = ImageLoader.loadImage("/battleship.png");
 		shoot = new AudioPlayer("/sounds/shoot4.wav");
-		shoot.setVolume(-10f);
+		if (shoot != null) shoot.setVolume(-10f);
 		
 		this.addComponent(new Collider());
 
@@ -103,13 +104,13 @@ public class Player extends GameObject {
 		else if (posX <= 2)
 			posX = 3;
 		else
-			posX += velX;
+			posX += velX * Time.getDelta();
 		if (posY >= 565)
 			posY = 564;
 		else if (posY <= 0)
 			posY = 1;
 		else
-			posY += velY;
+			posY += velY * Time.getDelta();
 	}
 
 	private void attack() {

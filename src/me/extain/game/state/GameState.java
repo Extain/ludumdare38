@@ -17,6 +17,7 @@ import me.extain.game.objects.powerup.PowerupPickup;
 import me.extain.game.objects.powerup.ShootFarther;
 import me.extain.game.objects.powerup.TriShot;
 import me.extain.game.utils.Delay;
+import me.extain.game.utils.Timer;
 import me.extain.game.utils.Utils;
 
 public class GameState extends State {
@@ -31,7 +32,9 @@ public class GameState extends State {
 	private ArrayList<GameObject> toRemoveVirus = new ArrayList<GameObject>();
 	private ArrayList<GameObject> toRemovePowerup = new ArrayList<GameObject>();
 
-	private Delay virusSpawnDelay, bloodSpawnDelay, decreaseVirusSpawnTimer, powerupSpawnDelay;
+	private Timer virusSpawnDelay, bloodSpawnDelay, decreaseVirusSpawnTimer, powerupSpawnDelay;
+	
+	private int score = 0;
 
 	private BufferedImage background;
 
@@ -39,19 +42,19 @@ public class GameState extends State {
 		super(main);
 		player = new Player(main, 50, 50);
 
-		virusSpawnDelay = new Delay(1300);
-		virusSpawnDelay.restart();
+		virusSpawnDelay = new Timer(1300);
+		virusSpawnDelay.start();
 
-		bloodSpawnDelay = new Delay(300);
-		bloodSpawnDelay.restart();
+		bloodSpawnDelay = new Timer(400);
+		bloodSpawnDelay.start();
 
-		powerupSpawnDelay = new Delay(1200);
-		powerupSpawnDelay.restart();
+		powerupSpawnDelay = new Timer(600);
+		powerupSpawnDelay.start();
 
 		background = ImageLoader.loadImage("/vein-background.png");
 
-		decreaseVirusSpawnTimer = new Delay(400);
-		decreaseVirusSpawnTimer.restart();
+		decreaseVirusSpawnTimer = new Timer(400);
+		decreaseVirusSpawnTimer.start();
 
 		for (int i = 0; i < 100; i++) {
 			Random random = new Random();
@@ -67,10 +70,10 @@ public class GameState extends State {
 
 	private void bloodSpawn() {
 		Random random = new Random();
-		if (bloodSpawnDelay.isOver()) {
+		if (bloodSpawnDelay.finished()) {
 			bloodCells
 					.add(new BloodCell(main, this, (float) 15 + random.nextInt(300), (float) 10 + random.nextInt(500)));
-			bloodSpawnDelay.restart();
+			bloodSpawnDelay.start();
 		}
 
 	}
@@ -79,8 +82,10 @@ public class GameState extends State {
 	public void update() {
 		player.update();
 		for (VirusCell virus : viruses) {
-			if (virus.isDead)
+			if (virus.isDead) {
 				toRemoveVirus.add(virus);
+				score += 100;
+			}
 			else
 				virus.update();
 		}
@@ -92,7 +97,7 @@ public class GameState extends State {
 				pow.update();
 		}
 
-		if (powerupSpawnDelay.isOver()) {
+		if (powerupSpawnDelay.finished()) {
 			Random random = new Random();
 			
 			int effect = random.nextInt(50);
@@ -106,19 +111,22 @@ public class GameState extends State {
 				powerups.add(new FastShoot(main, random.nextInt(200), random.nextInt(400)));
 			}
 			
-			powerupSpawnDelay.restart();
+			powerupSpawnDelay.start();
 		}
 
-		if (virusSpawnDelay.isOver() && virusSpawnDelay.isActive()) {
+		if (virusSpawnDelay.finished()) {
 			Random random = new Random();
 			viruses.add(new VirusCell(main, this, random.nextInt(200), random.nextInt(400)));
-			virusSpawnDelay.restart();
+			virusSpawnDelay.start();
 		}
 
-		if (decreaseVirusSpawnTimer.isOver()) {
-			if (virusSpawnDelay.getLength() != 600)
+		if (decreaseVirusSpawnTimer.finished()) {
+			if (virusSpawnDelay.getLength() != 100)
 				virusSpawnDelay.setLength(virusSpawnDelay.getLength() - 10);
-			decreaseVirusSpawnTimer.restart();
+			
+			if (bloodSpawnDelay.getLength() != 1600) bloodSpawnDelay.setLength(bloodSpawnDelay.getLength() + 50); 
+			
+			decreaseVirusSpawnTimer.start();
 		}
 
 		for (GameObject bloodCell : bloodCells) {
@@ -132,7 +140,7 @@ public class GameState extends State {
 		bloodSpawn();
 
 		if (bloodCells.size() == 0) {
-			main.getStateMachine().setState(new DeathState(main));
+			main.getStateMachine().setState(new DeathState(main, score));
 		}
 
 		bloodCells.removeAll(toRemoveBlood);
@@ -155,9 +163,8 @@ public class GameState extends State {
 
 		player.render(graphics);
 
-		graphics.setColor(Color.BLACK);
-		graphics.drawString("Blood Cells: " + bloodCells.size(), 10, 40);
-		graphics.drawString("Virus Cells: " + viruses.size(), 10, 70);
+		graphics.setColor(Color.WHITE);
+		graphics.drawString("Score: " + score, 20, 50);
 	}
 
 	public ArrayList<GameObject> sphereCollide(float x, float y, float radius) {

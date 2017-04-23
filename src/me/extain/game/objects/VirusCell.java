@@ -11,6 +11,7 @@ import me.extain.game.graphics.image.ImageLoader;
 import me.extain.game.objects.component.Collider;
 import me.extain.game.objects.projectile.Projectile;
 import me.extain.game.state.GameState;
+import me.extain.game.utils.Time;
 import me.extain.game.utils.Utils;
 
 public class VirusCell extends GameObject {
@@ -62,13 +63,13 @@ public class VirusCell extends GameObject {
 		else if (posX <= 2)
 			posX = 3;
 		else
-			posX += velX;
+			posX += velX * Time.getDelta();
 		if (posY >= 565)
 			posY = 564;
 		else if (posY <= 0)
 			posY = 1;
 		else
-			posY += velY;
+			posY += velY * Time.getDelta();
 	}
 
 	private void handleAI() {

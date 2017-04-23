@@ -1,5 +1,6 @@
 package me.extain.game.state;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
@@ -13,10 +14,14 @@ public class DeathState extends State {
 	private GuiHandler guiHandler = new GuiHandler();
 
 	private BufferedImage background;
+	
+	private int score;
 
-	public DeathState(Main main) {
+	public DeathState(Main main, int score) {
 		super(main);
-
+		
+		this.score = score;
+		
 		background = ImageLoader.loadImage("/death-screen-background.png");
 
 		guiHandler.addGuiObject(new GuiButton(main, "Main Menu", 100 + 100 / 2, 300, 100, 20, 0));
@@ -39,6 +44,8 @@ public class DeathState extends State {
 	@Override
 	public void render(Graphics2D graphics) {
 		graphics.drawImage(background, 0, 0, null);
+		graphics.setColor(Color.WHITE);
+		graphics.drawString("Score: " + score, 400 / 2, 270);
 		guiHandler.render(graphics);
 	}
 

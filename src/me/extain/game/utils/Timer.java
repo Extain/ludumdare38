@@ -21,4 +21,12 @@ public class Timer {
 	public boolean finished() {
 		return Time.getTime() >= endTime;
 	}
+	
+	public int getLength() {
+		return duration;
+	}
+	
+	public void setLength(float duration) {
+		this.duration = (int) duration;
+	}
 }

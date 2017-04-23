@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import me.extain.game.Main;
+import me.extain.game.utils.Time;
 
 public class NormalProjectile extends Projectile {
 	
@@ -16,7 +17,7 @@ public class NormalProjectile extends Projectile {
 	@Override
 	public void update() {
 		super.update();
-		posY += velY;
+		posY += velY * Time.getDelta();
 	}
 
 	@Override
