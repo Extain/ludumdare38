@@ -4,13 +4,14 @@ import me.extain.game.Main;
 import me.extain.game.graphics.image.ImageLoader;
 import me.extain.game.objects.effects.Effect;
 
-public class FastShoot extends PowerupPickup {
+public class TriShot extends PowerupPickup {
 
-	public FastShoot(Main main, float posX, float posY) {
+	public TriShot(Main main, float posX, float posY) {
 		super(main, posX, posY);
 		
-		image = ImageLoader.loadImage("/shoot-fast-powerup.png");
+		image = ImageLoader.loadImage("/trishot-powerup.png");
 		
-		powEffect = Effect.SHOOTFAST;
+		powEffect = Effect.TRISHOT;
 	}
+
 }

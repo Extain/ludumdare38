@@ -10,6 +10,7 @@ import me.extain.game.audio.AudioPlayer;
 import me.extain.game.graphics.image.ImageLoader;
 import me.extain.game.objects.GameObject;
 import me.extain.game.objects.component.Collider;
+import me.extain.game.objects.effects.Effect;
 import me.extain.game.objects.projectile.NormalProjectile;
 import me.extain.game.objects.projectile.Projectile;
 import me.extain.game.utils.Delay;
@@ -22,6 +23,8 @@ public class Player extends GameObject {
 	private ArrayList<Projectile> toRemoveProj = new ArrayList<Projectile>();
 
 	private Delay attackDelay = new Delay(300);
+	
+	protected boolean triShot;
 	
 	private AudioPlayer shoot;
 
@@ -53,10 +56,16 @@ public class Player extends GameObject {
 				projectile.update();
 		projectiles.removeAll(toRemoveProj);
 		
-		if (getPowerup("fastshoot") != null) {
+		if (getPowerup(Effect.SHOOTFAST) != null) {
 			attackDelay.setLength(100);
 		} else {
 			attackDelay.setLength(300);
+		}
+		
+		if (getPowerup(Effect.TRISHOT) != null) {
+			triShot = true;
+		} else {
+			triShot = false;
 		}
 		
 		powerups.removeAll(toRemovePow);
@@ -101,6 +110,7 @@ public class Player extends GameObject {
 		if (attackDelay.isOver()) {
 			projectiles.add(new NormalProjectile(main, posX + 4, posY - 4));
 			projectiles.add(new NormalProjectile(main, posX + 20, posY - 4));
+			if (triShot) projectiles.add(new NormalProjectile(main, posX + width - 12, posY - 4));
 			shoot.play();
 			attackDelay.restart();
 		}

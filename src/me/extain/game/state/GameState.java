@@ -15,6 +15,7 @@ import me.extain.game.objects.Wall;
 import me.extain.game.objects.player.Player;
 import me.extain.game.objects.powerup.FastShoot;
 import me.extain.game.objects.powerup.PowerupPickup;
+import me.extain.game.objects.powerup.TriShot;
 import me.extain.game.utils.Delay;
 import me.extain.game.utils.Utils;
 
@@ -39,18 +40,18 @@ public class GameState extends State {
 		player = new Player(main, 50, 50);
 
 		virusSpawnDelay = new Delay(1300);
-		virusSpawnDelay.terminate();
+		virusSpawnDelay.restart();
 
 		bloodSpawnDelay = new Delay(300);
-		bloodSpawnDelay.terminate();
+		bloodSpawnDelay.restart();
 
 		powerupSpawnDelay = new Delay(1200);
-		powerupSpawnDelay.terminate();
+		powerupSpawnDelay.restart();
 
 		background = ImageLoader.loadImage("/vein-background.png");
 
 		decreaseVirusSpawnTimer = new Delay(400);
-		decreaseVirusSpawnTimer.terminate();
+		decreaseVirusSpawnTimer.restart();
 
 		for (int i = 0; i < 100; i++) {
 			Random random = new Random();
@@ -93,7 +94,7 @@ public class GameState extends State {
 
 		if (powerupSpawnDelay.isOver()) {
 			Random random = new Random();
-			powerups.add(new FastShoot(main, random.nextInt(200), random.nextInt(400)));
+			powerups.add(new TriShot(main, random.nextInt(200), random.nextInt(400)));
 			powerupSpawnDelay.restart();
 		}
 

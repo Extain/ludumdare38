@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import me.extain.game.Main;
 import me.extain.game.objects.component.Component;
+import me.extain.game.objects.effects.Effect;
 import me.extain.game.objects.powerup.Powerup;
 
 public abstract class GameObject {
@@ -18,7 +19,6 @@ public abstract class GameObject {
 
 	public boolean isInfected;
 	public boolean isDead;
-	public boolean shouldRemove;
 
 	public GameObject(Main main, float posX, float posY) {
 		this.main = main;
@@ -48,11 +48,14 @@ public abstract class GameObject {
 	}
 
 	public void updatePowerups() {
-		for (Powerup pow : powerups)
-			if (!pow.getDelay().isOver())
-				pow.update();
-			else
+		for (Powerup pow : powerups) {
+			if (pow.shouldRemove()) {
 				toRemovePow.add(pow);
+			}
+			else {
+				pow.update();
+			}
+		}
 	}
 
 	public void addComponent(Component component) {
@@ -63,16 +66,18 @@ public abstract class GameObject {
 		this.powerups.add(powerup);
 	}
 
-	public void removePowerup(String tag) {
-		for (Powerup pow : powerups)
-			if (pow.getTag().equalsIgnoreCase(tag))
-				powerups.remove(pow);
+	public void removePowerup(Effect effect) {
+		for (Powerup powerup : powerups) {
+			if (powerup.getEffect() == effect) {
+				powerups.remove(powerup);
+			}
+		}
 	}
 
-	public Powerup getPowerup(String powerup) {
-		for (Powerup pow : powerups) {
-			if (pow.getTag().equalsIgnoreCase(powerup))
-				return pow;
+	public Powerup getPowerup(Effect effect) {
+		for (Powerup powerup : powerups) {
+			if (powerup.getEffect() == effect)
+				return powerup;
 		}
 
 		return null;

@@ -4,9 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 
 import me.extain.game.Main;
+import me.extain.game.audio.AudioPlayer;
 
 public class GuiButton extends GUI {
 
@@ -14,6 +14,8 @@ public class GuiButton extends GUI {
 	private float width, height;
 
 	private Main main;
+	
+	private AudioPlayer select;
 
 	public GuiButton(Main main, String text, float posX, float posY, float width, float height, int id) {
 		this.main = main;
@@ -23,6 +25,8 @@ public class GuiButton extends GUI {
 		this.width = width;
 		this.height = height;
 		this.id = id;
+		
+		select = new AudioPlayer("/sounds/select.wav");
 
 	}
 
@@ -35,9 +39,11 @@ public class GuiButton extends GUI {
 		Rectangle bounds = new Rectangle((int) posX, (int) posY, (int) width, (int) height);
 
 		hovered = bounds.contains(main.getInput().getMouseX(), main.getInput().getMouseY());
-
-		if (main.getInput().isButton(MouseEvent.BUTTON1) && hovered)
+		
+		if (main.getInput().isButton(MouseEvent.BUTTON1) && hovered) {
 			interacted = true;
+			select.play();
+		}
 		else
 			interacted = false;
 	}
