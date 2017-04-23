@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import me.extain.game.Main;
+import me.extain.game.audio.AudioPlayer;
 import me.extain.game.graphics.image.ImageLoader;
 import me.extain.game.objects.BloodCell;
 import me.extain.game.objects.GameObject;
@@ -16,7 +17,6 @@ import me.extain.game.objects.powerup.FastShoot;
 import me.extain.game.objects.powerup.PowerupPickup;
 import me.extain.game.objects.powerup.ShootFarther;
 import me.extain.game.objects.powerup.TriShot;
-import me.extain.game.utils.Delay;
 import me.extain.game.utils.Timer;
 import me.extain.game.utils.Utils;
 
@@ -33,7 +33,7 @@ public class GameState extends State {
 	private ArrayList<GameObject> toRemovePowerup = new ArrayList<GameObject>();
 
 	private Timer virusSpawnDelay, bloodSpawnDelay, decreaseVirusSpawnTimer, powerupSpawnDelay;
-	
+
 	private int score = 0;
 
 	private BufferedImage background;
@@ -48,7 +48,7 @@ public class GameState extends State {
 		bloodSpawnDelay = new Timer(400);
 		bloodSpawnDelay.start();
 
-		powerupSpawnDelay = new Timer(600);
+		powerupSpawnDelay = new Timer(1200);
 		powerupSpawnDelay.start();
 
 		background = ImageLoader.loadImage("/vein-background.png");
@@ -56,7 +56,7 @@ public class GameState extends State {
 		decreaseVirusSpawnTimer = new Timer(400);
 		decreaseVirusSpawnTimer.start();
 
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 300; i++) {
 			Random random = new Random();
 			bloodCells
 					.add(new BloodCell(main, this, (float) 15 + random.nextInt(300), (float) 10 + random.nextInt(500)));
@@ -71,6 +71,7 @@ public class GameState extends State {
 	private void bloodSpawn() {
 		Random random = new Random();
 		if (bloodSpawnDelay.finished()) {
+
 			bloodCells
 					.add(new BloodCell(main, this, (float) 15 + random.nextInt(300), (float) 10 + random.nextInt(500)));
 			bloodSpawnDelay.start();
@@ -85,8 +86,7 @@ public class GameState extends State {
 			if (virus.isDead) {
 				toRemoveVirus.add(virus);
 				score += 100;
-			}
-			else
+			} else
 				virus.update();
 		}
 
@@ -98,22 +98,29 @@ public class GameState extends State {
 		}
 
 		if (powerupSpawnDelay.finished()) {
-			Random random = new Random();
-			
-			int effect = random.nextInt(50);
-			
+			Random powRand = new Random();
+
+			int effect = powRand.nextInt(1000);
+
 			switch (effect) {
 			case 10:
-				powerups.add(new TriShot(main, random.nextInt(200), random.nextInt(400)));
-			case 30:
-				powerups.add(new ShootFarther(main, random.nextInt(200), random.nextInt(400)));
-			case 40:
-				powerups.add(new FastShoot(main, random.nextInt(200), random.nextInt(400)));
-			}
-			
-			powerupSpawnDelay.start();
-		}
 
+				powerups.add(new TriShot(main, powRand.nextInt(200), powRand.nextInt(400)));
+				powerupSpawnDelay.start();
+				effect = 0;
+				break;
+			case 30:
+				powerups.add(new ShootFarther(main, powRand.nextInt(200), powRand.nextInt(400)));
+				effect = 0;
+				break;
+			case 40:
+				powerups.add(new FastShoot(main, powRand.nextInt(200), powRand.nextInt(400)));
+				powerupSpawnDelay.start();
+				effect = 0;
+				break;
+			}
+		}
+		
 		if (virusSpawnDelay.finished()) {
 			Random random = new Random();
 			viruses.add(new VirusCell(main, this, random.nextInt(200), random.nextInt(400)));
@@ -121,11 +128,12 @@ public class GameState extends State {
 		}
 
 		if (decreaseVirusSpawnTimer.finished()) {
-			if (virusSpawnDelay.getLength() != 100)
+			if (virusSpawnDelay.getLength() != 50)
 				virusSpawnDelay.setLength(virusSpawnDelay.getLength() - 10);
-			
-			if (bloodSpawnDelay.getLength() != 1600) bloodSpawnDelay.setLength(bloodSpawnDelay.getLength() + 50); 
-			
+
+			if (bloodSpawnDelay.getLength() != 1600)
+				bloodSpawnDelay.setLength(bloodSpawnDelay.getLength() + 50);
+
 			decreaseVirusSpawnTimer.start();
 		}
 

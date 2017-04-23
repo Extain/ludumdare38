@@ -44,6 +44,10 @@ public class AudioPlayer {
 		clip.setFramePosition(0);
 		clip.start();
 	}
+	
+	public boolean isRunning() {
+		return clip.isRunning();
+	}
 
 	public void stop() {
 		if (clip.isRunning())

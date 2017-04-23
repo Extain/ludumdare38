@@ -118,6 +118,25 @@ public class VirusCell extends GameObject {
 		velX = random.nextInt(2);
 		velY = random.nextInt(2);
 	}
+	
+	private void wander(float x, float y) {
+		float speedX = (x - posY);
+		float speedY = (y - posY);
+
+		float maxSpeed = 1f;
+
+		if (speedX > maxSpeed)
+			speedX = maxSpeed;
+		if (speedX < -maxSpeed)
+			speedX = -maxSpeed;
+		if (speedY > maxSpeed)
+			speedY = maxSpeed;
+		if (speedY < -maxSpeed)
+			speedY = -maxSpeed;
+
+		velX = speedX;
+		velY = speedY;
+	}
 
 	private void chase() {
 		float speedX = (target.getPosX() - posY);
