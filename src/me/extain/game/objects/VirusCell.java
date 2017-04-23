@@ -89,7 +89,8 @@ public class VirusCell extends GameObject {
 	}
 
 	private void latch() {
-		if (latchTimer >= 100) {
+		Random random = new Random();
+		if (latchTimer >= random.nextInt(200) + 50) {
 
 			target.turnToVirus();
 			target = null;
