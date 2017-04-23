@@ -5,5 +5,5 @@
  - [x] Add main menu, pause menu, and death screen. 
  - [ ] Add a score counter
  - [x] Need to implement dying. Dying will be caused by all the blood cells being infected.
- - [ ] Add Tri Shot Powerup, and Helper powerup
- - [ ] make it where powerups randomly spawn
+ - [x] Add Tri Shot Powerup, and Shoot far powerup
+ - [ ] make it where powerups randomly spawn properly at random intervals
