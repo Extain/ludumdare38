@@ -3,7 +3,7 @@ package me.extain.game;
 import me.extain.game.display.Window;
 import me.extain.game.input.InputHandler;
 import me.extain.game.objects.component.Physics;
-import me.extain.game.state.GameState;
+import me.extain.game.state.MainMenuState;
 import me.extain.game.state.StateMachine;
 import me.extain.game.utils.Time;
 
@@ -35,7 +35,7 @@ public class Main implements Runnable {
 	private void init() {
 		// Initialize the states
 		Time.init();
-		stateMachine.setState(new GameState(this));
+		stateMachine.setState(new MainMenuState(this));
 	}
 	
 	public void run() {

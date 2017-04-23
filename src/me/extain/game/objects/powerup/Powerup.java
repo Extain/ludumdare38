@@ -60,7 +60,7 @@ public abstract class Powerup extends GameObject {
 			isDead = true;
 			pickup.play();
 			object.addPowerup(this);
-			powTimeDelay.terminate();
+			powTimeDelay.restart();
 		}
 	}
 	

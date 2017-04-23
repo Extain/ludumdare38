@@ -142,7 +142,7 @@ public class GameState extends State {
 
 		player.render(graphics);
 
-		graphics.setColor(Color.BLACK);
+		graphics.setColor(Color.WHITE);
 		graphics.drawString("Blood Cells: " + bloodCells.size(), 10, 40);
 		graphics.drawString("Virus Cells: " + viruses.size(), 10, 70);
 	}
