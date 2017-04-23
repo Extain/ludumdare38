@@ -68,6 +68,12 @@ public class Player extends GameObject {
 			triShot = false;
 		}
 		
+		if (getPowerup(Effect.SHOOTFAR) != null) {
+			for (Projectile proj : projectiles) {
+				proj.setLife(160);
+			}
+		}
+		
 		powerups.removeAll(toRemovePow);
 	}
 

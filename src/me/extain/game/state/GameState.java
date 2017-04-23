@@ -11,10 +11,10 @@ import me.extain.game.graphics.image.ImageLoader;
 import me.extain.game.objects.BloodCell;
 import me.extain.game.objects.GameObject;
 import me.extain.game.objects.VirusCell;
-import me.extain.game.objects.Wall;
 import me.extain.game.objects.player.Player;
 import me.extain.game.objects.powerup.FastShoot;
 import me.extain.game.objects.powerup.PowerupPickup;
+import me.extain.game.objects.powerup.ShootFarther;
 import me.extain.game.objects.powerup.TriShot;
 import me.extain.game.utils.Delay;
 import me.extain.game.utils.Utils;
@@ -94,7 +94,18 @@ public class GameState extends State {
 
 		if (powerupSpawnDelay.isOver()) {
 			Random random = new Random();
-			powerups.add(new TriShot(main, random.nextInt(200), random.nextInt(400)));
+			
+			int effect = random.nextInt(50);
+			
+			switch (effect) {
+			case 10:
+				powerups.add(new TriShot(main, random.nextInt(200), random.nextInt(400)));
+			case 30:
+				powerups.add(new ShootFarther(main, random.nextInt(200), random.nextInt(400)));
+			case 40:
+				powerups.add(new FastShoot(main, random.nextInt(200), random.nextInt(400)));
+			}
+			
 			powerupSpawnDelay.restart();
 		}
 

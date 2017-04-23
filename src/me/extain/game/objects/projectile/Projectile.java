@@ -43,4 +43,8 @@ public abstract class Projectile extends GameObject {
 			this.isDead = true;
 		}
 	}
+	
+	public void setLife(float life) {
+		this.life = life;
+	}
 }

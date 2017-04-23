@@ -20,7 +20,7 @@ public abstract class PowerupPickup extends GameObject {
 	
 	protected AudioPlayer pickupSound;
 	
-	private int duration = 3000;
+	private int duration = 6000;
 
 	public PowerupPickup(Main main, float posX, float posY) {
 		super(main, posX, posY);
